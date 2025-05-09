@@ -17,6 +17,10 @@ app.use("/api/bookmark", bookmarkRoutes);
 import userRoutes from "./routes/userRoutes.js";
 app.use("/api/user",userRoutes);
 
+import { errorHandler } from "./middleware/errorMiddleware.js";
+app.use(errorHandler);
+
+
 mongoose.connect(API_URL,()=>{
     console.log("Connected to Mongo DB");
 })
