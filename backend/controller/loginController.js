@@ -14,8 +14,8 @@ const loginController = async function(req,res){
     try{
         const exisitngUser = await user.findOne({username});
         if(!exisitngUser) return res.status(400).json("Could not find user");
-        const password = await bcrypt.compare(password,exisitngUser.password);
-        if(!password) return res.status(401).json({message:"Incorrect password"});
+        const validate = await bcrypt.compare(password,exisitngUser.password);
+        if(!validate) return res.status(401).json({message:"Incorrect password"});
         const token = jwt.sign({userId: exisitngUser._id},process.env.JWT_SECRET);
         return res.status(201).json({message:"Successfully signed in",token});
     }catch(err){

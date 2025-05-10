@@ -1,14 +1,13 @@
-
-import todo from "../models/bookmarkModel";
+import bookmark from "../models/bookmarkModel";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const bookmarkController = async function(req,res){
     try{
-        const decoded = jwt.verify(token,process.env.JWT_SECRET);
-    if(!decoded) return  res.status(401).json({message:"Authentication error"});
-    const userBookmark = await todo.findOne({userId});
+    const userId = req.user.id;
+    if(!userId) return res.status(400).json({message:"Could not find userId"});
+    const userBookmark = await bookmark.find({userId});
     if(!userBookmark) return res.status(401).json({message:"Nothing found with id"});
     const title = userBookmark.title;
     const url = userBookmark.url;

@@ -2,12 +2,12 @@ import todo from "../models/bookmarkModel";
 
 const newbookmarkController = async function(){
     const {title,url,collection,tags,category} = req.body;
+    const userId = req.user.id;
+    if(!userId) return res.status(400).json({message:"Could not find userId"});
     try{
-    const decoded = jwt.verify(token,process.env.JWT_SECRET);
-    if(!decoded) return  res.status(401).json({message:"Authentication error"});
-
+        
     const newBookmark = await todo.create({
-        title,category,collection,tags,url
+        title,category,collection,tags,url, userId
     });
     if(!newBookmark) return res.status(400).json({message:"Unable to create in todo model"});
     return res.status(201).json({title,url,collection,category,tags});

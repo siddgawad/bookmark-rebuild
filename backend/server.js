@@ -4,11 +4,12 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
+const PORT = process.env.PORT || 5000;
 
 let API_URL = `http://localhost:${PORT}`;
 
 const app = express();
-app.use(express.Router());
+app.use(express.json());
 app.use(cors());
 
 import bookmarkRoutes from "./routes/bookmarkRoutes.js";
@@ -21,7 +22,7 @@ import { errorHandler } from "./middleware/errorMiddleware.js";
 app.use(errorHandler);
 
 
-mongoose.connect(API_URL,()=>{
+mongoose.connect(process.env.MONGO_URI,()=>{
     console.log("Connected to Mongo DB");
 })
 .then(()=>{
