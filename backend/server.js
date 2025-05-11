@@ -21,6 +21,11 @@ app.use("/api/user",userRoutes);
 import { errorHandler } from "./middleware/errorMiddleware.js";
 app.use(errorHandler);
 
+import redis from "./redis/redisClient.js";
+await redis.set("test","value","EX",60);
+const val = await redis.get("test");
+console.log("Redis Test Value:",val);
+
 
 mongoose.connect(process.env.MONGO_URI,()=>{
     console.log("Connected to Mongo DB");

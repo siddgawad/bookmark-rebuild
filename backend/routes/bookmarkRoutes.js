@@ -6,7 +6,7 @@ const app = express();
 const router = express.Router();
 
 // get bookmarks of user on login/register
-import bookmarkController from "../controller/bookmarkController.js";
+import bookmarkController from "../controller/bookmark/bookmarkController.js";
 router.get("/bookmark",authMiddleware,bookmarkController);
 
 // create new bookmark

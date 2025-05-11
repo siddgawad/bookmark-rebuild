@@ -1,4 +1,4 @@
-import bookmark from "../models/bookmarkModel";
+import bookmark from "../../models/bookmarkModel";
 import dotenv from "dotenv";
 
 dotenv.config();
