@@ -26,6 +26,9 @@ await redis.set("test","value","EX",60);
 const val = await redis.get("test");
 console.log("Redis Test Value:",val);
 
+// health check 
+import healthRoute from "./routes/healthRoute.js";
+app.use("/api/health",healthRoute);
 
 mongoose.connect(process.env.MONGO_URI,()=>{
     console.log("Connected to Mongo DB");
