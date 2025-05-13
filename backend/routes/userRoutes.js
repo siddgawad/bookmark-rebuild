@@ -1,5 +1,6 @@
 import express from "express";
 import {authRateLimiter} from "../middleware/rateLimiter.js"
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const app = express();
 const router = express.Router();
@@ -23,7 +24,9 @@ import refreshtokenController from "../controller/refreshtokenController.js";
 router.post("/refresh",refreshtokenController
 )
 
-
+//logout 
+import logoutController from "../controller/account/logoutController.js";
+router.post("/logout",authMiddleware,logoutController);
 
 
 export default router;
