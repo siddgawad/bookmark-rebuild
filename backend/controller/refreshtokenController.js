@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import redis from "../redis/redisClient.js";
 import dotenv from "dotenv";
+import user from "../models/userModel.js";
 
 
 dotenv.config();
@@ -17,11 +18,11 @@ const refreshtokenController = async function (req,res){
         const userId = decoded.userId;
 
         //step 3: check if token matches the one stored in red
-        const storedToken = await redis.get(`refresh:${newUser._id}`);
+        const storedToken = await redis.get(`refresh:${userId}`);
         if(!storedToken || storedToken !== cookie) return res.status(403).json({message:"Refresh token invalid or reused"});
 
         //step 4: issue new token
-        const token = jwt.sign({userId: newUser._id},process.env.JWT_SECRET,{expiresIn:"15m"});
+        const token = jwt.sign({userId},process.env.JWT_SECRET,{expiresIn:"15m"});
 
         //step 5: return new token 
         return res.status(200).json({token});
