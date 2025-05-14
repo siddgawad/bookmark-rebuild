@@ -1,6 +1,7 @@
 import express from "express";
 import rateLimiter from "../middleware/rateLimiter.js"
 import authMiddleware from "../middleware/authMiddleware.js";
+import {body} from "express-validator";
 
 const app = express();
 const router = express.Router();
