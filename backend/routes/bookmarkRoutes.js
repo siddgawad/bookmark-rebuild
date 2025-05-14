@@ -1,26 +1,33 @@
 import express from "express";
-import authMiddleware from "../middleware/authMiddleware.js"
+import authMiddleware from "../middleware/authMiddleware.js";
 import bookmarkValidator from "../validators/bookmarkValidator.js";
+import { validationResult } from "express-validator";
 
-const app = express();
 const router = express.Router();
 
-// get bookmarks of user on login/register
+// Validation error handler middleware
+const handleValidationErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next();
+};
+
+// Get bookmarks of user on login/register
 import bookmarkController from "../controller/bookmark/bookmarkController.js";
-router.get("/bookmark",authMiddleware,bookmarkController);
+router.get("/", authMiddleware, bookmarkController);
 
-// create new bookmark
-import newbookmarkController from "../controller/bookmark/newbookmarkController.js";
-router.post("/bookmark",authMiddleware,bookmarkValidator,
-    newbookmarkController);
+// Create new bookmark
+import newBookmarkController from "../controller/bookmark/newbookmarkController.js";
+router.post("/", authMiddleware, bookmarkValidator, handleValidationErrors, newBookmarkController);
 
-//delete a bookmark 
-import deletebookmarkController from "../controller/bookmark/deletebookmarkController.js";
-router.delete("/bookmark/:id",authMiddleware,deletebookmarkController);
+// Delete a bookmark 
+import deleteBookmarkController from "../controller/bookmark/deletebookmarkController.js";
+router.delete("/:id", authMiddleware, deleteBookmarkController);
 
-//update a bookmark 
-import updatebookmarkController from "../controller/bookmark/updatebookmarkController.js";
-router.put("/bookmark/:id",authMiddleware,bookmarkValidator,updatebookmarkController);
+// Update a bookmark 
+import updateBookmarkController from "../controller/bookmark/updatebookmarkController.js";
+router.put("/:id", authMiddleware, bookmarkValidator, handleValidationErrors, updateBookmarkController);
 
 export default router;
-
