@@ -1,4 +1,4 @@
-import todo from "../models/bookmarkModel";
+import bookmark from "../../models/bookmarkModel.js";
 
 const newbookmarkController = async function(){
     const {title,url,collection,tags,category} = req.body;
@@ -6,7 +6,7 @@ const newbookmarkController = async function(){
     if(!userId) return res.status(400).json({message:"Could not find userId"});
     try{
         
-    const newBookmark = await todo.create({
+    const newBookmark = await bookmark.create({
         title,category,collection,tags,url, userId
     });
     if(!newBookmark) return res.status(400).json({message:"Unable to create in todo model"});

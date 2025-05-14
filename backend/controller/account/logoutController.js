@@ -1,4 +1,4 @@
-import redis from "../../redis/redisClient";
+import redis from "../../redis/redisClient.js";
 
 const logoutController=async function(req,res){
     try{

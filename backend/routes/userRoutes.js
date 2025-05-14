@@ -1,5 +1,5 @@
 import express from "express";
-import {authRateLimiter} from "../middleware/rateLimiter.js"
+import rateLimiter from "../middleware/rateLimiter.js"
 import authMiddleware from "../middleware/authMiddleware.js";
 
 const app = express();
@@ -7,14 +7,14 @@ const router = express.Router();
 
 //login
 import loginController from "../controller/account/loginController.js";
-router.post("/login",authRateLimiter,[
+router.post("/login",rateLimiter,[
     body("username").notEmpty(),
     body("password").notEmpty()
 ],loginController);
 
 //register
 import registerController from "../controller/account/registerController.js";
-router.post("/register",authRateLimiter,[
+router.post("/register",rateLimiter,[
     body("username").notEmpty(),
     body("password").notEmpty()
 ], registerController);
