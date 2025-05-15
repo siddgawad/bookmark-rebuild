@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bookmark Manager</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="board-container">
+    <header>
+      <h1>📚 Bookmark Board</h1>
+      <button id="logoutBtn">Logout</button>
+    </header>
+    <main class="kanban-board">
+      <section class="column" data-status="todo">
+        <h2>To Read</h2>
+        <div class="card-list" id="todo"></div>
+      </section>
+      <section class="column" data-status="in-progress">
+        <h2>Reading</h2>
+        <div class="card-list" id="in-progress"></div>
+      </section>
+      <section class="column" data-status="done">
+        <h2>Done</h2>
+        <div class="card-list" id="done"></div>
+      </section>
+    </main>
+    <footer>
+      <button id="addBookmarkBtn">+ Add Bookmark</button>
+    </footer>
+  </div>
+  <script>
+if (!localStorage.getItem("accessToken")) {
+  window.location.href = "login.html";
+}
+</script>
+<script type="module" src="../js/script.js"></script>
+</body>
+</html>

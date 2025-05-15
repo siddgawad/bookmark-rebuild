@@ -1,0 +1,155 @@
+/* Reset and base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f5f7;
+  color: #333;
+  padding: 1rem;
+}
+
+/* Header & Footer */
+header, footer {
+  padding: 1rem;
+  background-color: #026aa7;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  z-index: 10;
+}
+header {
+  top: 0;
+}
+footer {
+  bottom: 0;
+  top: auto;
+}
+
+/* Board Layout */
+.board-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.kanban-board {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+@media (min-width: 768px) {
+  .kanban-board {
+    flex-direction: row;
+  }
+}
+.column {
+  flex: 1;
+  background: #ebecf0;
+  border-radius: 12px;
+  padding: 1rem;
+  min-height: 250px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.column h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  color: #17394d;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+.card-list {
+  min-height: 100px;
+}
+.card {
+  background: white;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: grab;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card.dragging {
+  opacity: 0.5;
+  transform: rotate(1deg);
+}
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background-color: #fdfdfd;
+}
+.card-list:empty::before {
+  content: "No bookmarks yet";
+  color: #999;
+  font-size: 0.9rem;
+  display: block;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Add Bookmark Button */
+#addBookmarkBtn {
+  background-color: #5aac44;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: background 0.2s;
+}
+#addBookmarkBtn:hover {
+  background-color: #519839;
+}
+
+/* Auth Forms */
+.auth-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #026aa7;
+}
+.auth-container form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.auth-container form button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #026aa7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.auth-container form button:hover {
+  background-color: #014f86;
+}
+.auth-container .error {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.auth-container p {
+  text-align: center;
+  margin-top: 1rem;
+}
