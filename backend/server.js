@@ -50,6 +50,8 @@ console.log(`- REDIS_URL: ${process.env.REDIS_URL ? '✓ Set' : '❌ Missing'}`)
 // Health check route - place this early to test server without DB dependencies
 import healthRoute from "./routes/healthRoute.js";
 app.use("/api/health", healthRoute);
+import debugRoute from "./routes/debugRoute.js";
+app.use("/api/debug", debugRoute);
 
 // Test Redis connection early before handling routes that depend on it
 import redis from "./redis/redisClient.js";
