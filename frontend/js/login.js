@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("loginEmail").value;
+    const username = document.getElementById("loginEmail").value;
     const password = document.getElementById("loginPassword").value;
     const submitBtn = e.target.querySelector("button[type='submit']");
 
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
