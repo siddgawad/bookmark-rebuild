@@ -251,7 +251,7 @@ function showToast(msg) {
 
 document.getElementById("logoutBtn")?.addEventListener("click", async () => {
   try {
-    await fetch("http://localhost:3000/api/user/logout", {
+    await fetch(`${API_BASE}/user/logout`, {
       method: "POST",
       credentials: "include"
     });
