@@ -4,37 +4,133 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bookmark Manager</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <div class="board-container">
-    <header>
-      <h1>📚 Bookmark Board</h1>
-      <button id="logoutBtn">Logout</button>
-    </header>
-    <main class="kanban-board">
-      <section class="column" data-status="todo">
-        <h2>To Read</h2>
-        <div class="card-list" id="todo"></div>
-      </section>
-      <section class="column" data-status="in-progress">
-        <h2>Reading</h2>
-        <div class="card-list" id="in-progress"></div>
-      </section>
-      <section class="column" data-status="done">
-        <h2>Done</h2>
-        <div class="card-list" id="done"></div>
-      </section>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-icon">📚</span>
+        <h1>BookMark</h1>
+      </div>
+
+      <nav class="menu">
+        <a href="#" class="menu-item active" data-page="all">
+          <span class="menu-icon">📑</span> All Bookmarks
+        </a>
+        <a href="#" class="menu-item" data-page="favorites">
+          <span class="menu-icon">⭐</span> Favorites
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="btn btn-danger">
+          🔒 Logout
+        </button>
+        
+        
+        <button id="exportBtn" class="btn"><span>⬇️</span> Export</button>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <header class="header">
+        <h1 class="page-title">All Bookmarks</h1>
+        <div class="search-container">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" placeholder="Search bookmarks..." />
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <div class="view-toggles">
+          <button class="view-toggle active" data-view="grid">📱 Grid View</button>
+          <button class="view-toggle" data-view="list">📋 List View</button>
+        </div>
+      </div>
+
+      <!-- Bookmarks display -->
+      <section id="bookmarkGrid" class="bookmark-grid"></section>
+      <section id="bookmarkList" class="bookmark-list hidden"></section>
     </main>
-    <footer>
-      <button id="addBookmarkBtn">+ Add Bookmark</button>
-    </footer>
   </div>
-  <script>
-if (!localStorage.getItem("accessToken")) {
-  window.location.href = "login.html";
-}
-</script>
-<script type="module" src="../js/script.js"></script>
+
+  <!-- Floating Add Button -->
+  <div class="add-bookmark" id="addBookmarkBtn">+</div>
+
+  <!-- Add Bookmark Modal -->
+  <div class="modal-overlay" id="addBookmarkModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Add New Bookmark</h2>
+        <button class="close-modal" id="closeAddModal">&times;</button>
+      </div>
+      <form class="modal-form" id="addBookmarkForm">
+        <div class="form-group">
+          <label for="bookmarkUrl">URL</label>
+          <input type="url" id="bookmarkUrl" class="form-input" placeholder="https://example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="bookmarkTitle">Title</label>
+          <input type="text" id="bookmarkTitle" class="form-input" placeholder="Website Title" required />
+        </div>
+        <div class="form-group">
+          <label for="bookmarkDescription">Description</label>
+          <textarea id="bookmarkDescription" class="form-input" placeholder="Add a description..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="bookmarkTags">Tags (comma separated)</label>
+          <input type="text" id="bookmarkTags" class="form-input" placeholder="e.g. Dev, Tools, Research" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" id="cancelAddBookmark">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Bookmark</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Export Modal -->
+  <div class="modal-overlay" id="exportModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Export Bookmarks</h2>
+        <button class="close-modal" id="closeExportModal">&times;</button>
+      </div>
+      <div class="modal-form">
+        <div class="form-group">
+          <label for="exportFormat">Export Format</label>
+          <select id="exportFormat" class="form-input">
+            <option value="json">JSON</option>
+            <option value="html">HTML</option>
+            <option value="csv">CSV</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Scope</label>
+          <div>
+            <input type="radio" id="exportAll" name="exportScope" value="all" checked />
+            <label for="exportAll">All bookmarks</label>
+          </div>
+          <div>
+            <input type="radio" id="exportSelected" name="exportScope" value="selected" />
+            <label for="exportSelected">Favorites only</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" id="cancelExport">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmExport">Export</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Script (load after DOM) -->
+  <script type="module" src="../js/script.js"></script>
 </body>
 </html>
