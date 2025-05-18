@@ -1,37 +1,43 @@
-const form = document.getElementById("register-form");
-const errorMsg = document.getElementById("error-message");
+const API_BASE = "https://bookmark-rebuild.onrender.com/api";
 
-form.addEventListener("submit", async (e) => {
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  errorMsg.textContent = "";
 
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
+  const email = document.getElementById("registerEmail").value;
+  const password = document.getElementById("registerPassword").value;
 
-  if (!username || !password) {
-    errorMsg.textContent = "Both fields are required.";
-    return;
-  }
+  const submitBtn = e.target.querySelector("button[type='submit']");
+  submitBtn.disabled = true;
+  submitBtn.classList.add("loading");
 
   try {
-    const res = await fetch("http://localhost:3000/api/user/register", {
+    const res = await fetch(`${API_BASE}/user/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ email, password }),
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-      errorMsg.textContent = data.message || "Registration failed.";
-      return;
+      throw new Error(data.message || "Registration failed");
     }
 
-    alert("Account created successfully. You can now login.");
-    window.location.href = "login.html";
+    localStorage.setItem("accessToken", data.token);
+    window.location.href = "/frontend/index.html"; // Adjust as needed
+
   } catch (err) {
-    console.error("Register error:", err);
-    errorMsg.textContent = "An unexpected error occurred.";
+    showToast(err.message || "Error registering");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("loading");
   }
 });
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 3000);
+}

@@ -1,32 +1,43 @@
-const loginForm = document.getElementById("login-form");
-const errorMsg = document.getElementById("error-message");
+const API_BASE = "https://bookmark-rebuild.onrender.com/api";
 
-loginForm.addEventListener("submit", async (e) => {
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  errorMsg.textContent = "";
 
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  const submitBtn = e.target.querySelector("button[type='submit']");
+  submitBtn.disabled = true;
+  submitBtn.classList.add("loading");
 
   try {
-    const res = await fetch("http://localhost:3000/api/user/login", {
+    const res = await fetch(`${API_BASE}/user/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ username, password }),
+      credentials: "include", // important for refresh cookie
+      body: JSON.stringify({ email, password }),
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-      errorMsg.textContent = data.message || "Login failed.";
-      return;
+      throw new Error(data.message || "Login failed");
     }
 
     localStorage.setItem("accessToken", data.token);
-    window.location.href = "index.html";
+    window.location.href = "/frontend/index.html"; // Adjust path if needed
+
   } catch (err) {
-    console.error("Login error:", err);
-    errorMsg.textContent = "An error occurred. Try again.";
+    showToast(err.message || "Error logging in");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("loading");
   }
 });
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 3000);
+}
