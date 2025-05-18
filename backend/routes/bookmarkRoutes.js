@@ -5,7 +5,7 @@ import bookmarkValidator, { bookmarkPartialValidator } from "../validators/bookm
 
 import bookmarkController from "../controller/bookmark/bookmarkController.js";
 import newBookmarkController from "../controller/bookmark/newbookmarkController.js";
-import deleteBookmarkController from "../controller/bookmark/deleteBookmarkController.js";
+import deletebookmarkController from "../controller/bookmark/deletebookmarkController.js"
 import updateBookmarkController from "../controller/bookmark/updatebookmarkController.js";
 
 const router = express.Router();
@@ -20,7 +20,7 @@ const handleValidationErrors = (req, res, next) => {
 
 router.get("/", authMiddleware, bookmarkController);
 router.post("/", authMiddleware, bookmarkValidator, handleValidationErrors, newBookmarkController);
-router.delete("/:id", authMiddleware, deleteBookmarkController);
+router.delete("/:id", authMiddleware, deletebookmarkController);
 router.put("/:id", authMiddleware, bookmarkPartialValidator, handleValidationErrors, updateBookmarkController);
 
 export default router;
