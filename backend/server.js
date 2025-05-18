@@ -30,22 +30,27 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
- process.env.FRONTEND_URL,
- "https://bookmark-rebuild.vercel.app",
- "https://bookmark-rebuild-*.vercel.app",
+  "https://bookmark-rebuild.vercel.app",
+  "http://localhost:3000",
+  "http://127.0.0.1:5500",
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      /^https:\/\/bookmark-rebuild-[a-z0-9\-]+\.vercel\.app$/.test(origin)
+    ) {
       callback(null, true);
     } else {
-      console.error("Blocked by CORS:", origin);
+      console.error("❌ Blocked by CORS:", origin);
       callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true
 }));
+
 
 // Cookie parser middleware should be before routes
 app.use(cookieParser());
@@ -54,7 +59,7 @@ app.use(cookieParser());
 console.log('Environment:');
 console.log(`- NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
 console.log(`- PORT: ${PORT}`);
-console.log(`- FRONTEND_URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
+console.log(`- FRONTEND_URL: ${process.env.FRONTEND_URL}`);
 console.log(`- JWT_SECRET: ${process.env.JWT_SECRET ? '✓ Set' : '❌ Missing'}`);
 console.log(`- JWT_REFRESH_SECRET: ${process.env.JWT_REFRESH_SECRET ? '✓ Set' : '❌ Missing'}`);
 console.log(`- MONGO_URI: ${process.env.MONGO_URI ? '✓ Set' : '❌ Missing'}`);
