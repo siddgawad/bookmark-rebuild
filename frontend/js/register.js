@@ -1,14 +1,17 @@
 const API_BASE = "https://bookmark-rebuild.onrender.com/api";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const registerForm = document.getElementById("registerForm");
-  if (!registerForm) return;
+  const registerForm = document.getElementById("register-form");
+  if (!registerForm) {
+    console.error("❌ register-form not found");
+    return;
+  }
 
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById("registerEmail").value;
-    const password = document.getElementById("registerPassword").value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
     const submitBtn = e.target.querySelector("button[type='submit']");
 
     submitBtn.disabled = true;
@@ -27,9 +30,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!res.ok) throw new Error(data.message || "Registration failed");
 
       localStorage.setItem("accessToken", data.token);
-      window.location.href = "/index.html"; // ✅ if index.html is at root
+
+      // ✅ Adjust path depending on final hosting
+      window.location.href = "/index.html";
 
     } catch (err) {
+      console.error("❌ Register error:", err);
       showToast(err.message || "Registration error");
     } finally {
       submitBtn.disabled = false;
@@ -40,7 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function showToast(message) {
   const toast = document.getElementById("toast");
-  if (!toast) return;
+  if (!toast) {
+    alert(message);
+    return;
+  }
   toast.textContent = message;
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 3000);
