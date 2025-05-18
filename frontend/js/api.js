@@ -1,4 +1,5 @@
-const API_BASE = "http://localhost:3000/api";
+const API_BASE = "https://bookmark-rebuild.onrender.com/api";
+
 
 // Attach access token to all requests
 function getAuthHeaders() {
