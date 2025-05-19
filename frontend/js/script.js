@@ -182,6 +182,8 @@ addBookmarkForm.addEventListener('submit', async (e) => {
   const description = document.getElementById('bookmarkDescription').value;
   const tagsInput = document.getElementById('bookmarkTags').value;
   const tags = tagsInput.split(',').map(t => t.trim());
+  console.log({ title, url, description, tags });
+
 
   const created = await createBookmark({ title, url, description, tags });
   allBookmarks.unshift(created);
@@ -253,11 +255,15 @@ document.getElementById("logoutBtn")?.addEventListener("click", async () => {
   try {
     await fetch(`${API_BASE}/user/logout`, {
       method: "POST",
-      credentials: "include"
+      credentials: "include",
+      headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
     });
     localStorage.removeItem("accessToken");
     window.location.href = "login.html";
   } catch (err) {
     console.error("Logout failed:", err);
+  }finally {
+    localStorage.removeItem("accessToken");
+    window.location.href = "login.html";
   }
 });
