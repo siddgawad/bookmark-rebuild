@@ -14,7 +14,6 @@ const httpCounter = new client.Counter({
 });
 register.registerMetric(httpCounter);
 
-// count hits to /metrics (use a global middleware if you want app-wide counts)
 router.use((req, res, next) => {
   res.on("finish", () => {
     const route = req.route?.path || req.path || "unknown";
