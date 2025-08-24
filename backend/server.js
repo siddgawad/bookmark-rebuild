@@ -12,7 +12,7 @@ import metricsRoute from "./routes/metricsRoute.js";
 import debugRoute from "./routes/debugRoute.js";
 import bookmarkRoutes from "./routes/bookmarkRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import redis from "./redis/redisClient.js";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
