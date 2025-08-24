@@ -9,12 +9,12 @@ import pinoHttp from "pino-http";
 
 // if you prefer prom-client per-route module, keep your existing routes;
 // this file also shows a minimal /metrics setup inline if you want it.
-import healthRoute from "./routes/healthRoute.js";
-import metricsRoute from "./routes/metricsRoute.js";
-import debugRoute from "./routes/debugRoute.js";
-import bookmarkRoutes from "./routes/bookmarkRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import redis from "./redis/redisClient.js";
+import healthRoute from "./healthRoute.js";
+import metricsRoute from "/metricsRoute.js";
+import debugRoute from "./debugRoute.js";
+import bookmarkRoutes from "./bookmarkRoutes.js";
+import userRoutes from "./userRoutes.js";
+import redis from "../redis/redisClient.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
