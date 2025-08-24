@@ -1,15 +1,16 @@
-
-import request from 'supertest';
-import express from 'express';
-import healthRoute from '../routes/healthRoute.js';
+import request from "supertest";
+import express from "express";
+import healthRoute from "../routes/healthRoute.js";
 
 const app = express();
-app.use('/api/health', healthRoute);
+app.use("/healthz", healthRoute);
 
-describe('GET /api/health', () => {
-  it('should return status 200 and a message', async () => {
-    const res = await request(app).get('/api/health');
+describe("GET /healthz", () => {
+  it("returns liveness JSON", async () => {
+    const res = await request(app).get("/healthz");
     expect(res.statusCode).toBe(200);
-    expect(res.body.message).toBeDefined();
+    expect(res.body.ok).toBe(true);
+    expect(typeof res.body.uptime_s).toBe("number");
+    expect(new Date(res.body.ts).toString()).not.toBe("Invalid Date");
   });
 });
