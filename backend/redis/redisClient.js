@@ -1,46 +1,24 @@
+// redis/redisClient.js
 import Redis from "ioredis";
-import dotenv from "dotenv";
-dotenv.config();
 
-// Initialize Redis client with error handling
-let redis;
+// Read once from process.env (dotenv is handled in server.js)
+const url = process.env.REDIS_URL;
+if (!url) throw new Error("REDIS_URL is missing");
 
-try {
-  redis = new Redis(process.env.REDIS_URL);
-  
-  redis.on("connect", () => {
-    console.log("Redis connected successfully");
-  });
-  
-  redis.on("error", (err) => {
-    console.error("Redis connection error:", err);
-    // Don't exit the process here, let individual operations handle Redis failures
-  });
-  
-  // Test connection on init
-  redis.ping().then(() => {
-    console.log("Redis server responded to PING");
-  }).catch(err => {
-    console.error("Redis PING failed:", err);
-  });
-  
-} catch (initError) {
-  console.error("Redis initialization error:", initError);
-  // Create a mock Redis client that logs errors instead of failing silently
-  redis = {
-    set: async () => { 
-      console.error("Redis not available: set operation failed");
-      throw new Error("Redis connection unavailable");
-    },
-    get: async () => {
-      console.error("Redis not available: get operation failed");
-      throw new Error("Redis connection unavailable");
-    },
-    del: async () => {
-      console.error("Redis not available: del operation failed");
-      throw new Error("Redis connection unavailable");
-    }
-  };
-}
+const useTLS = url.startsWith("rediss://");
+
+// Create client with production-safe defaults
+const redis = new Redis(url, {
+  ...(useTLS ? { tls: {} } : {}), // Upstash requires TLS (rediss://)
+  family: 4,                      // prefer IPv4 to avoid DNS quirks
+  connectTimeout: 5000,
+  maxRetriesPerRequest: 3,
+  retryStrategy: (times) => Math.min(times * 200, 2000), // backoff up to 2s
+});
+
+redis.on("connect", () => console.log("Redis: connected"));
+redis.on("ready",   () => console.log("Redis: ready"));
+redis.on("error",   (err) => console.error("Redis error:", err));
+redis.on("end",     () => console.warn("Redis: connection closed"));
 
 export default redis;

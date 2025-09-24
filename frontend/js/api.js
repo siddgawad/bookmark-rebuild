@@ -17,7 +17,7 @@ async function handleError(res, defaultMessage) {
       const errorData = await res.json();
       throw new Error(errorData.message || defaultMessage);
     } catch (e) {
-      throw new Error(defaultMessage || res.statusText);
+      throw new Error(defaultMessage || res.statusTextd)
     }
   }
 }

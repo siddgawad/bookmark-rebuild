@@ -16,7 +16,11 @@ import userRoutes from "./routes/userRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.join(__dirname, ".env") });
+// server.js
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config(); // use local .env only for dev
+}
+
 
 const requiredEnv = ["MONGO_URI", "JWT_SECRET", "JWT_REFRESH_SECRET", "REDIS_URL"];
 const missing = requiredEnv.filter((k) => !process.env[k]);
@@ -63,9 +67,6 @@ const norm = (o) => (o || "").trim().replace(/\/+$/, "");
 
 const allow = new Set([
   "https://bookmark-rebuild.vercel.app",
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "http://127.0.0.1:5500",
   ...(process.env.FRONTEND_URL ? [norm(process.env.FRONTEND_URL)] : []),
 ]);
 
