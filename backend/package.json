@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env server.js",
-    "test": "jest"
+    "start": "node server.js",                     
+    "dev": "node --env-file=.env server.js",       
+    "build": "echo \"no build step\""
   },
   "type": "module",
   "keywords": [],
